@@ -1,0 +1,95 @@
+﻿/****************************************************************************
+Copyright (c) 2010-2012 cocos2d-x.org
+Copyright (c) 2008-2010 Ricardo Quesada
+Copyright (c) 2011 Zynga Inc.
+
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+****************************************************************************/
+using System;
+namespace cocos2d
+{
+    /** 
+    @brief Flips the sprite horizontally
+    @since v0.99.0
+    */
+    public class CCFlipX : CCActionInstant
+    {
+        public CCFlipX()
+        {
+            m_bFlipX = false;
+        }
+
+        ~CCFlipX()
+        {
+
+        }
+
+        public static CCFlipX actionWithFlipX(bool x)
+        {
+            CCFlipX pRet = new CCFlipX();
+
+            if (pRet != null && pRet.initWithFlipX(x))
+            {
+                return pRet;
+            }
+
+            return null;
+        }
+
+        public bool initWithFlipX(bool x)
+        {
+            m_bFlipX = x;
+            return true;
+        }
+
+        public override void startWithTarget(CCNode pTarget)
+        {
+            base.startWithTarget(pTarget);
+            ((CCSprite)(pTarget)).IsFlipX = m_bFlipX;
+        }
+
+        public override CCFiniteTimeAction reverse()
+        {
+            return actionWithFlipX(!m_bFlipX);
+        }
+
+        public override CCObject copyWithZone(CCZone pZone)
+        {
+            CCZone pNewZone = null;
+            CCFlipX pRet = null;
+
+            if (pZone != null && pZone.m_pCopyObject != null)
+            {
+                pRet = (CCFlipX)(pZone.m_pCopyObject);
+            }
+            else
+            {
+                pRet = new CCFlipX();
+                pZone = pNewZone = new CCZone(pRet);
+            }
+
+            base.copyWithZone(pZone);
+            pRet.initWithFlipX(m_bFlipX);
+            return pRet;
+        }
+
+        private bool m_bFlipX;
+    }
+}
